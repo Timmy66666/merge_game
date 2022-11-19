@@ -8,21 +8,24 @@
 #define rep(i, x, y) for(register int i = x; i <= y; i++)
 #define wl(i) while(i)
 using namespace std;
-string listh[10000], mergels[1000][5];
+string listh[10000], mergels[1000][5], pswd;
+bool op;
 int num, mgnum = 0;
 
-void inputit()
+void init()
 {
-	ifstream finls("data/list.txt", ios::in);
+	ifstream finls("data/list.dat", ios::in);
 	finls>>num;
 	rep(i, 1, num) finls>>listh[i];
-	ifstream finmg("data/merge.txt", ios::in);
+	ifstream finmg("data/merge.dat", ios::in);
 	while(!mgnum || mergels[mgnum][1] != ".")
 	{
 		mgnum++;
 		finmg>>mergels[mgnum][1]>>mergels[mgnum][2]>>mergels[mgnum][3];
 	} 
 	mgnum--;
+	ifstream findat("data/datas.dat", ios::in);
+	findat>>op>>pswd;
 }
 void printit()
 {
@@ -39,28 +42,33 @@ void printit()
 void saveit()
 {
 	cout<<"Saving...";
-	ofstream fout("data/list.txt", ios::out);
-	fout<<num<<endl;
-	rep(i, 1, num) fout<<listh[i]<<endl;
+	ofstream foutls("data/list.dat", ios::out);
+	foutls<<num<<endl;
+	rep(i, 1, num) foutls<<listh[i]<<endl;
+	ofstream foutdat("data/datas.dat", ios::out);
+	foutdat<<op<<endl<<pswd;
 	cout<<"done!\n";
 }
 void addit()
 {
-	cout<<"Password: ";
-	string psw = "";
-	char ch;
-	wl(1)
+	if(op)
 	{
-		ch = getch();
-		if(ch == 13) break;
-		psw += ch;
-		cout<<"*";
-	}
-	cout<<"\n";
-	if(psw != "happyty1")
-	{
-		cout<<"Wrong password! Try again!\n";
-		return;
+		cout<<"Password: ";
+		string psw = "";
+		char ch;
+		wl(1)
+		{
+			ch = getch();
+			if(ch == 13) break;
+			psw += ch;
+			cout<<"*";
+		}
+		cout<<"\n";
+		if(psw != pswd)
+		{
+			cout<<"Wrong password! Try again!\n";
+			return;
+		}
 	}
 	string mainobj[10] = {"", "metal", "wood", "water", "fire", "soil"};
 	srand(time(0));
@@ -126,6 +134,29 @@ void mergeit()
 	cout<<"Add: '"<<fdres<<"'.\n";
 	if(fdres[0] >= 'A' && fdres[0] <= 'Z') cout<<"Get final item!\n";
 }
+void sets()
+{
+	string t;
+	cout<<"Type: ";
+	cin>>t;
+	if(t == "npsw")
+	{
+		cout<<"New password: ";
+		cin>>pswd;
+		cout<<"Setting new password ('"<<pswd<<"')...";
+		op = 1;
+		cout<<"done!\n";
+		return; 
+	}
+	if(t == "cpsw")
+	{
+		cout<<"Closing password...";
+		op = 0;
+		cout<<"done!\n";
+		return;
+	}
+	cout<<"Command '"<<t<<"' not found. Type 'help' for help.\n";
+} 
 void clearscr()
 {
 	system("cls");
@@ -144,6 +175,10 @@ void help()
 	cout<<" -----------|------------------\n";
 	cout<<"  merge     |  尝试合成元素\n";
 	cout<<" -----------|------------------\n";
+	cout<<"  settings  |  设置\n";
+	cout<<"    -npsw   |  设置新密码\n";
+	cout<<"    -cpsw   |  关闭密码\n";
+	cout<<" -----------|------------------\n";
 	cout<<"  clear     |  清屏\n";
 	cout<<" -----------|------------------\n";
 	cout<<"  break     |  退出（自动存档）\n";
@@ -152,7 +187,7 @@ void help()
 int main()
 {
 	cout<<"Hello! This is TY's game world!\nType 'help' for help.\n\n";
-	inputit();
+	init();
 	printit();
 	string s;
 	wl(1)
@@ -178,6 +213,11 @@ int main()
 		if(s == "merge")
 		{
 			mergeit();
+			continue;
+		}
+		if(s == "settings")
+		{
+			sets();
 			continue;
 		}
 		if(s == "clear")
