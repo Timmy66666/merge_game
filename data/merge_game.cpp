@@ -1,10 +1,11 @@
-#include<stdio.h>
-#include<iostream>
-#include<cstring>
-#include<fstream>
-#include<bits/stdc++.h>
-#include<algorithm>
-#include<conio.h>
+#include <stdio.h>
+#include <iostream>
+#include <cstring>
+#include <fstream>
+#include <bits/stdc++.h>
+#include <algorithm>
+#include <conio.h>
+#include <windows.h>
 #define rep(i, x, y) for(register int i = x; i <= y; i++)
 #define wl(i) while(i)
 using namespace std;
@@ -15,58 +16,67 @@ int num, mgnum = 0;
 void init()
 {
 	ifstream finls("data/list.dat", ios::in);
-	finls>>num;
-	rep(i, 1, num) finls>>listh[i];
+	finls >> num;
+	rep(i, 1, num) finls >> listh[i];
 	ifstream finmg("data/merge.dat", ios::in);
-	while(!mgnum || mergels[mgnum][1] != ".")
+	while (!mgnum || mergels[mgnum][1] != ".")
 	{
 		mgnum++;
-		finmg>>mergels[mgnum][1]>>mergels[mgnum][2]>>mergels[mgnum][3];
-	} 
+		finmg >> mergels[mgnum][1] >> mergels[mgnum][2] >> mergels[mgnum][3];
+	}
 	mgnum--;
 	ifstream findat("data/datas.dat", ios::in);
-	findat>>op>>pswd;
+	findat >> op >> pswd;
 }
+
 void printit()
 {
-	cout<<"Now you have: ";
-	if(!num)
+	cout << "Now you have: ";
+	if (!num)
 	{
-		cout<<"(empty).\n";
+		cout << "(empty).\n";
 		return;
 	}
 	sort(listh + 1, listh + num + 1);
-	rep(i, 1, num - 1) cout<<listh[i]<<" ";
-	cout<<listh[num]<<".\n";
+	rep(i, 1, num - 1) cout << listh[i] << " ";
+	cout << listh[num] << ".\n";
 }
+
 void saveit()
 {
-	cout<<"Saving...";
+	cout << "Saving...";
 	ofstream foutls("data/list.dat", ios::out);
-	foutls<<num<<endl;
-	rep(i, 1, num) foutls<<listh[i]<<endl;
+	foutls << num << endl;
+	rep(i, 1, num) foutls << listh[i] << endl;
 	ofstream foutdat("data/datas.dat", ios::out);
-	foutdat<<op<<endl<<pswd;
-	cout<<"done!\n";
+	foutdat << op << endl << pswd;
+	cout << "done!\n";
 }
+
+string getpsw()
+{
+	cout << "Password: ";
+	string psw;
+	char ch;
+	wl(1)
+	{
+		ch = getch();
+		if (ch == 13)
+			break;
+		psw += ch;
+		cout << "*";
+	}
+	cout << "\n";
+	return psw;
+}
+
 void addit()
 {
-	if(op)
+	if (op)
 	{
-		cout<<"Password: ";
-		string psw = "";
-		char ch;
-		wl(1)
+		if (getpsw() != pswd)
 		{
-			ch = getch();
-			if(ch == 13) break;
-			psw += ch;
-			cout<<"*";
-		}
-		cout<<"\n";
-		if(psw != pswd)
-		{
-			cout<<"Wrong password! Try again!\n";
+			cout << "Wrong password! Try again!\n";
 			return;
 		}
 	}
@@ -74,163 +84,192 @@ void addit()
 	srand(time(0));
 	int rdn = rand() % 5 + 1;
 	listh[++num] = mainobj[rdn];
-	cout<<"Add: "<<mainobj[rdn]<<".\n"; 
+	cout << "Add: " << mainobj[rdn] << ".\n";
 }
+
 bool fdit(string s, int t = 1)
 {
 	int k = 0;
-	rep(i, 1, num) if(s == listh[i])
+	rep(i, 1, num) if (s == listh[i])
 	{
 		k++;
-		if(k == t) return 1;
+		if (k == t)
+			return 1;
 	}
 	return 0;
 }
+
 string mergefd(string it1, string it2)
 {
-	rep(i, 1, mgnum) if((mergels[i][1] == it1 && mergels[i][2] == it2) || (mergels[i][2] == it1 && mergels[i][1] == it2)) return mergels[i][3];
+	rep(i, 1, mgnum) if ((mergels[i][1] == it1 && mergels[i][2] == it2) || (mergels[i][2] == it1 && mergels[i][1] == it2))
+		return mergels[i][3];
 	return "empty";
 }
+
 void delit(string it)
 {
-	rep(i, 1, num) if(listh[i] == it)
+	rep(i, 1, num) if (listh[i] == it)
 	{
 		rep(k, i, num - 1) listh[k] = listh[k + 1];
 		num--;
 		break;
 	}
 }
+
 void mergeit()
 {
 	string it1, it2;
-	cout<<"Item1: ";
-	cin>>it1;
-	cout<<"Item2: ";
-	cin>>it2;
-	if(it1 == it2 && !fdit(it1, 2))
+	cout << "Item1: ";
+	cin >> it1;
+	cout << "Item2: ";
+	cin >> it2;
+	if (it1 == it2 && !fdit(it1, 2))
 	{
-		cout<<"Don't have enough item '"<<it1<<"'.\n";
+		cout << "Don't have enough item '" << it1 << "'.\n";
 		return;
 	}
-	if(!fdit(it1))
+	if (!fdit(it1))
 	{
-		cout<<"Don't have any item '"<<it1<<"'.\n";
+		cout << "Don't have any item '" << it1 << "'.\n";
 		return;
 	}
-	if(!fdit(it2))
+	if (!fdit(it2))
 	{
-		cout<<"Don't have any item '"<<it2<<"'.\n";
+		cout << "Don't have any item '" << it2 << "'.\n";
 		return;
 	}
 	string fdres = mergefd(it1, it2);
-	if(fdres == "empty")
+	if (fdres == "empty")
 	{
-		cout<<"Can't merge '"<<it1<<"' and '"<<it2<<"'.\n";
+		cout << "Can't merge '" << it1 << "' and '" << it2 << "'.\n";
 		return;
 	}
 	listh[++num] = fdres;
 	delit(it1);
 	delit(it2);
-	cout<<"Add: '"<<fdres<<"'.\n";
-	if(fdres[0] >= 'A' && fdres[0] <= 'Z') cout<<"Get final item!\n";
+	cout << "Add: '" << fdres << "'.\n";
+	if (fdres[0] >= 'A' && fdres[0] <= 'Z')
+		cout << "Get final item!\n";
 }
+
 void sets()
 {
 	string t;
-	cout<<"Type: ";
-	cin>>t;
-	if(t == "npsw")
+	cout << "Type: ";
+	cin >> t;
+	if (t == "npsw")
 	{
-		cout<<"New password: ";
-		cin>>pswd;
-		cout<<"Setting new password ('"<<pswd<<"')...";
+		if (op)
+		{
+			if (getpsw() != pswd)
+			{
+				cout << "Wrong password! Try again!\n";
+				return;
+			}
+		}
+		cout << "New password: ";
+		pswd = getpsw();
+		cout << "Setting new password...";
 		op = 1;
-		cout<<"done!\n";
-		return; 
-	}
-	if(t == "cpsw")
-	{
-		cout<<"Closing password...";
-		op = 0;
-		cout<<"done!\n";
+		cout << "done!\n";
 		return;
 	}
-	cout<<"Command '"<<t<<"' not found. Type 'help' for help.\n";
-} 
+	if (t == "cpsw")
+	{
+		if (op)
+		{
+			if (getpsw() != pswd)
+			{
+				cout << "Wrong password! Try again!\n";
+				return;
+			}
+		}
+		cout << "Closing password...";
+		op = 0;
+		cout << "done!\n";
+		return;
+	}
+	cout << "Command '" << t << "' not found. Type 'help' for help.\n";
+}
+
 void clearscr()
 {
 	system("cls");
-	cout<<"Hello! This is TY's game world!\nType 'help' for help.\n\n";
+	cout << "Hello! This is TY's game world!\nType 'help' for help.\n\n";
+	printit();
 }
+
 void help()
 {
-	cout<<"\n";
-	cout<<"  ²Ù×÷Ãû³Æ  |  ¹¦ÄÜ\n";
-	cout<<" -----------|------------------\n";
-	cout<<"  print     |  Êä³öÏÖÓÐÔªËØ\n";
-	cout<<" -----------|------------------\n";
-	cout<<"  save      |  ´æµµ\n";
-	cout<<" -----------|------------------\n";
-	cout<<"  add       |  Ìí¼ÓËæ»úÔªËØ\n";
-	cout<<" -----------|------------------\n";
-	cout<<"  merge     |  ³¢ÊÔºÏ³ÉÔªËØ\n";
-	cout<<" -----------|------------------\n";
-	cout<<"  settings  |  ÉèÖÃ\n";
-	cout<<"    -npsw   |  ÉèÖÃÐÂÃÜÂë\n";
-	cout<<"    -cpsw   |  ¹Ø±ÕÃÜÂë\n";
-	cout<<" -----------|------------------\n";
-	cout<<"  clear     |  ÇåÆÁ\n";
-	cout<<" -----------|------------------\n";
-	cout<<"  break     |  ÍË³ö£¨×Ô¶¯´æµµ£©\n";
-	cout<<"\n";
+	cout << "\n";
+	cout << "  æ“ä½œåç§°  |  åŠŸèƒ½\n";
+	cout << " -----------|------------------\n";
+	cout << "  print     |  è¾“å‡ºçŽ°æœ‰å…ƒç´ \n";
+	cout << " -----------|------------------\n";
+	cout << "  save      |  å­˜æ¡£\n";
+	cout << " -----------|------------------\n";
+	cout << "  add       |  æ·»åŠ å…ƒç´ \n";
+	cout << " -----------|------------------\n";
+	cout << "  merge     |  åˆæˆå…ƒç´ \n";
+	cout << " -----------|------------------\n";
+	cout << "  settings  |  è®¾ç½®\n";
+	cout << "    -npsw   |  è®¾ç½®æ–°å¯†ç \n";
+	cout << "    -cpsw   |  å…³é—­å¯†ç \n";
+	cout << " -----------|------------------\n";
+	cout << "  clear     |  æ¸…å±\n";
+	cout << " -----------|------------------\n";
+	cout << "  break     |  é€€å‡ºï¼ˆè‡ªåŠ¨å­˜æ¡£ï¼‰\n";
+	cout << "\n";
 }
+
 int main()
 {
-	cout<<"Hello! This is TY's game world!\nType 'help' for help.\n\n";
+	cout << "Hello! This is TY's game world!\nType 'help' for help.\n\n";
 	init();
 	printit();
 	string s;
 	wl(1)
 	{
-		cout<<"- ";
-		cin>>s;
-		if(s == "break") break;
-		if(s == "print")
+		cout << "- ";
+		cin >> s;
+		if (s == "break")
+			break;
+		if (s == "print")
 		{
 			printit();
 			continue;
 		}
-		if(s == "save")
+		if (s == "save")
 		{
 			saveit();
 			continue;
 		}
-		if(s == "add")
+		if (s == "add")
 		{
 			addit();
 			continue;
 		}
-		if(s == "merge")
+		if (s == "merge")
 		{
 			mergeit();
 			continue;
 		}
-		if(s == "settings")
+		if (s == "settings")
 		{
 			sets();
 			continue;
 		}
-		if(s == "clear")
+		if (s == "clear")
 		{
 			clearscr();
 			continue;
 		}
-		if(s == "help")
+		if (s == "help")
 		{
 			help();
 			continue;
-		} 
-		cout<<"Command '"<<s<<"' not found. Type 'help' for help.\n";
+		}
+		cout << "Command '" << s << "' not found. Type 'help' for help.\n";
 	}
 	saveit();
 	return 0;
