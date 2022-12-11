@@ -29,33 +29,157 @@ void init()
 	findat >> op >> pswd;
 }
 
+string ch(string s)
+{
+	if (s == "metal")
+		return "金";
+	if (s == "wood")
+		return "木";
+	if (s == "water")
+		return "水";
+	if (s == "fire")
+		return "火";
+	if (s == "soil")
+		return "水";
+	if (s == "tree")
+		return "树";
+	if (s == "Gold")
+		return "金子";
+	if (s == "Mud")
+		return "泥";
+	if (s == "dust")
+		return "灰尘";
+	if (s == "Air")
+		return "空气";
+	if (s == "forest")
+		return "森林";
+	if (s == "desert")
+		return "沙漠";
+	if (s == "Beach")
+		return "沙滩";
+	if (s == "paper")
+		return "纸";
+	if (s == "Map")
+		return "地图";
+	if (s == "book")
+		return "书";
+	if (s == "sun")
+		return "太阳";
+	if (s == "planet")
+		return "星球";
+	if (s == "Mercury")
+		return "水星";
+	if (s == "Mars")
+		return "火星";
+	if (s == "Saturn")
+		return "土星";
+	if (s == "Jupiter")
+		return "木星";
+	if (s == "Venus")
+		return "金星";
+	if (s == "lake")
+		return "湖";
+	if (s == "sea")
+		return "海";
+	if (s == "ocean")
+		return "大洋";
+	if (s == "city")
+		return "城市";
+	if (s == "country")
+		return "国家";
+	if (s == "land")
+		return "大陆";
+	if (s == "Earth")
+		return "地球";
+	if (s == "金")
+		return "metal";
+	if (s == "木")
+		return "wood";
+	if (s == "水")
+		return "water";
+	if (s == "火")
+		return "fire";
+	if (s == "水")
+		return "soil";
+	if (s == "树")
+		return "tree";
+	if (s == "金子")
+		return "Gold";
+	if (s == "泥")
+		return "Mud";
+	if (s == "灰尘")
+		return "dust";
+	if (s == "空气")
+		return "Air";
+	if (s == "森林")
+		return "forest";
+	if (s == "沙漠")
+		return "desert";
+	if (s == "沙滩")
+		return "Beach";
+	if (s == "纸")
+		return "paper";
+	if (s == "地图")
+		return "Map";
+	if (s == "书")
+		return "book";
+	if (s == "太阳")
+		return "sun";
+	if (s == "星球")
+		return "planet";
+	if (s == "水星")
+		return "Mercury";
+	if (s == "火星")
+		return "Mars";
+	if (s == "土星")
+		return "Saturn";
+	if (s == "木星")
+		return "Jupiter";
+	if (s == "金星")
+		return "Venus";
+	if (s == "湖")
+		return "lake";
+	if (s == "海")
+		return "sea";
+	if (s == "大洋")
+		return "ocean";
+	if (s == "城市")
+		return "city";
+	if (s == "国家")
+		return "country";
+	if (s == "大陆")
+		return "land";
+	if (s == "地球")
+		return "Earth";
+}
+
 void printit()
 {
-	cout << "Now you have: ";
+	cout << "元素箱：";
 	if (!num)
 	{
-		cout << "(empty).\n";
+		cout << "(空).\n";
 		return;
 	}
 	sort(listh + 1, listh + num + 1);
-	rep(i, 1, num - 1) cout << listh[i] << " ";
-	cout << listh[num] << ".\n";
+	rep(i, 1, num - 1) cout << ch(listh[i]) << " ";
+	cout << ch(listh[num]) << ".\n";
 }
 
 void saveit()
 {
-	cout << "Saving...";
+	cout << "保存中...";
 	ofstream foutls("data/list.dat", ios::out);
 	foutls << num << endl;
 	rep(i, 1, num) foutls << listh[i] << endl;
 	ofstream foutdat("data/datas.dat", ios::out);
 	foutdat << op << endl << pswd;
-	cout << "done!\n";
+	cout << "完成!\n";
 }
 
 string getpsw()
 {
-	cout << "Password: ";
+	cout << "密码 - ";
 	string psw;
 	char ch;
 	wl(1)
@@ -76,7 +200,7 @@ void addit()
 	{
 		if (getpsw() != pswd)
 		{
-			cout << "Wrong password! Try again!\n";
+			cout << "密码错误! 请重试!\n";
 			return;
 		}
 	}
@@ -84,7 +208,7 @@ void addit()
 	srand(time(0));
 	int rdn = rand() % 5 + 1;
 	listh[++num] = mainobj[rdn];
-	cout << "Add: " << mainobj[rdn] << ".\n";
+	cout << "获得: " << ch(mainobj[rdn]) << ".\n";
 }
 
 bool fdit(string s, int t = 1)
@@ -119,43 +243,45 @@ void delit(string it)
 void mergeit()
 {
 	string it1, it2;
-	cout << "Item1: ";
+	cout << "元素1 - ";
 	cin >> it1;
-	cout << "Item2: ";
+	cout << "元素2 - ";
 	cin >> it2;
+	it1 = ch(it1);
+	it2 = ch(it2);
 	if (it1 == it2 && !fdit(it1, 2))
 	{
-		cout << "Don't have enough item '" << it1 << "'.\n";
+		cout << "没有足够的元素 " << ch(it1) << ".\n";
 		return;
 	}
 	if (!fdit(it1))
 	{
-		cout << "Don't have any item '" << it1 << "'.\n";
+		cout << "没有足够的元素 " << ch(it1) << ".\n";
 		return;
 	}
 	if (!fdit(it2))
 	{
-		cout << "Don't have any item '" << it2 << "'.\n";
+		cout << "没有足够的元素 " << ch(it2) << ".\n";
 		return;
 	}
 	string fdres = mergefd(it1, it2);
 	if (fdres == "empty")
 	{
-		cout << "Can't merge '" << it1 << "' and '" << it2 << "'.\n";
+		cout << "无法合并 " << ch(it1) << " 和 " << ch(it2) << ".\n";
 		return;
 	}
 	listh[++num] = fdres;
 	delit(it1);
 	delit(it2);
-	cout << "Add: '" << fdres << "'.\n";
+	cout << "获得: " << ch(fdres) << ".\n";
 	if (fdres[0] >= 'A' && fdres[0] <= 'Z')
-		cout << "Get final item!\n";
+		cout << "获得终极元素!\n";
 }
 
 void sets()
 {
 	string t;
-	cout << "Type: ";
+	cout << "操作 - ";
 	cin >> t;
 	if (t == "npsw")
 	{
@@ -163,15 +289,15 @@ void sets()
 		{
 			if (getpsw() != pswd)
 			{
-				cout << "Wrong password! Try again!\n";
+				cout << "密码错误! 请重试!\n";
 				return;
 			}
 		}
-		cout << "New password: ";
+		cout << "新";
 		pswd = getpsw();
-		cout << "Setting new password...";
+		cout << "设置新密码...";
 		op = 1;
-		cout << "done!\n";
+		cout << "完成!\n";
 		return;
 	}
 	if (t == "cpsw")
@@ -180,51 +306,51 @@ void sets()
 		{
 			if (getpsw() != pswd)
 			{
-				cout << "Wrong password! Try again!\n";
+				cout << "密码错误! 请重试!\n";
 				return;
 			}
 		}
-		cout << "Closing password...";
+		cout << "关闭密码...";
 		op = 0;
-		cout << "done!\n";
+		cout << "完成!\n";
 		return;
 	}
-	cout << "Command '" << t << "' not found. Type 'help' for help.\n";
+	cout << "不明指令 '" << t << "'. 输入 'help' 以获取帮助.\n";
 }
 
 void clearscr()
 {
 	system("cls");
-	cout << "Hello! This is TY's game world!\nType 'help' for help.\n\n";
+	cout << "欢迎来到 TY 的合并游戏!\n输入 'help' 以获取帮助.\n\n";
 	printit();
 }
 
 void help()
 {
 	cout << "\n";
-	cout << "  操作名称  |  功能\n";
-	cout << " -----------|------------------\n";
-	cout << "  print     |  输出现有元素\n";
-	cout << " -----------|------------------\n";
-	cout << "  save      |  存档\n";
-	cout << " -----------|------------------\n";
-	cout << "  add       |  添加元素\n";
-	cout << " -----------|------------------\n";
-	cout << "  merge     |  合成元素\n";
-	cout << " -----------|------------------\n";
-	cout << "  settings  |  设置\n";
-	cout << "    -npsw   |  设置新密码\n";
-	cout << "    -cpsw   |  关闭密码\n";
-	cout << " -----------|------------------\n";
-	cout << "  clear     |  清屏\n";
-	cout << " -----------|------------------\n";
-	cout << "  break     |  退出（自动存档）\n";
+	cout << "  操作名称 |  功能\n";
+	cout << " ----------|------------------\n";
+	cout << "  print    |  输出现有元素\n";
+	cout << " ----------|------------------\n";
+	cout << "  save     |  存档\n";
+	cout << " ----------|------------------\n";
+	cout << "  add      |  添加元素\n";
+	cout << " ----------|------------------\n";
+	cout << "  merge    |  合成元素\n";
+	cout << " ----------|------------------\n";
+	cout << "  sets     |  设置\n";
+	cout << "    -npsw  |  设置新密码\n";
+	cout << "    -cpsw  |  关闭密码\n";
+	cout << " ----------|------------------\n";
+	cout << "  clear    |  清屏\n";
+	cout << " ----------|------------------\n";
+	cout << "  break    |  退出（自动存档）\n";
 	cout << "\n";
 }
 
 int main()
 {
-	cout << "Hello! This is TY's game world!\nType 'help' for help.\n\n";
+	cout << "欢迎来到 TY 的合并游戏!\n输入 'help' 以获取帮助.\n\n";
 	init();
 	printit();
 	string s;
@@ -254,7 +380,7 @@ int main()
 			mergeit();
 			continue;
 		}
-		if (s == "settings")
+		if (s == "sets")
 		{
 			sets();
 			continue;
@@ -269,9 +395,10 @@ int main()
 			help();
 			continue;
 		}
-		cout << "Command '" << s << "' not found. Type 'help' for help.\n";
+		cout << "不明指令 '" << s << "'. 输入 'help' 以获取帮助.\n";
 	}
 	saveit();
 	return 0;
 }
-
+// get:ch
+// merge:can't merge - -(.)

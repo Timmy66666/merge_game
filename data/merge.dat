@@ -20,7 +20,7 @@ fire metal sun
 sun water planet
 planet water Mercury
 planet fire Mars
-planet soil Mercury
+planet soil Saturn
 planet wood Jupiter
 planet metal Venus
 water water lake
@@ -28,6 +28,7 @@ lake lake sea
 lake water sea
 sea sea ocean
 sea water ocean
+sea lake ocean
 soil soil city
 city city country
 country country land
