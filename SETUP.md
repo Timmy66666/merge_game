@@ -12,6 +12,6 @@
 
 >  <img src="./data/setup/3.png" style="zoom:50%;" /> <img src="./data/setup/4.png" style="zoom:50%;" /> <img src="./data/setup/5.png" style="zoom:50%;" />
 
-#### 4. [可选]更改图标
+#### 4. [可选]更改图标（地址为 `D:\merge_game-main\data\game.ico`）
 
 > <img src="./data/setup/6.png" style="zoom:50%;" /> <img src="./data/setup/7.png" style="zoom:50%;" /> <img src="./data/setup/8.png" style="zoom:50%;" />

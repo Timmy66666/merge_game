@@ -40,7 +40,7 @@ string ch(string s)
 	if (s == "fire")
 		return "火";
 	if (s == "soil")
-		return "水";
+		return "土";
 	if (s == "tree")
 		return "树";
 	if (s == "Gold")
@@ -99,7 +99,7 @@ string ch(string s)
 		return "water";
 	if (s == "火")
 		return "fire";
-	if (s == "水")
+	if (s == "土")
 		return "soil";
 	if (s == "树")
 		return "tree";
