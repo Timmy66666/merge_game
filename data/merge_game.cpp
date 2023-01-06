@@ -10,7 +10,7 @@
 #define wl(i) while(i)
 using namespace std;
 string listh[10000], mergels[1000][5], pswd;
-bool op;
+bool op, atsv;
 int num, mgnum = 0;
 
 void init()
@@ -26,7 +26,7 @@ void init()
 	}
 	mgnum--;
 	ifstream findat("data/datas.dat", ios::in);
-	findat >> op >> pswd;
+	findat >> op >> atsv >> pswd;
 }
 
 string ch(string s)
@@ -151,6 +151,7 @@ string ch(string s)
 		return "land";
 	if (s == "地球")
 		return "Earth";
+	return s;
 }
 
 void printit()
@@ -173,7 +174,7 @@ void saveit()
 	foutls << num << endl;
 	rep(i, 1, num) foutls << listh[i] << endl;
 	ofstream foutdat("data/datas.dat", ios::out);
-	foutdat << op << endl << pswd;
+	foutdat << op << atsv << endl << pswd;
 	cout << "完成!\n";
 }
 
@@ -315,6 +316,16 @@ void sets()
 		cout << "完成!\n";
 		return;
 	}
+	if (t == "atsv")
+	{
+		if (!atsv)
+			cout << "开启自动保存...";
+		else
+			cout << "关闭自动保存...";
+		atsv = !atsv;
+		cout << "成功!\n";
+		return;
+	}
 	cout << "不明指令 '" << t << "'. 输入 'help' 以获取帮助.\n";
 }
 
@@ -329,21 +340,22 @@ void help()
 {
 	cout << "\n";
 	cout << "  操作名称 |  功能\n";
-	cout << " ----------|------------------\n";
+	cout << " ----------|--------------------\n";
 	cout << "  print    |  输出现有元素\n";
-	cout << " ----------|------------------\n";
+	cout << " ----------|--------------------\n";
 	cout << "  save     |  存档\n";
-	cout << " ----------|------------------\n";
+	cout << " ----------|--------------------\n";
 	cout << "  add      |  添加元素\n";
-	cout << " ----------|------------------\n";
+	cout << " ----------|--------------------\n";
 	cout << "  merge    |  合成元素\n";
-	cout << " ----------|------------------\n";
+	cout << " ----------|--------------------\n";
 	cout << "  sets     |  设置\n";
-	cout << "    -npsw  |  设置新密码\n";
+	cout << "    -npsw  |  设置密码\n";
 	cout << "    -cpsw  |  关闭密码\n";
-	cout << " ----------|------------------\n";
+	cout << "    -atsv  |  开启/关闭自动保存\n";
+	cout << " ----------|--------------------\n";
 	cout << "  clear    |  清屏\n";
-	cout << " ----------|------------------\n";
+	cout << " ----------|--------------------\n";
 	cout << "  break    |  退出（自动存档）\n";
 	cout << "\n";
 }
@@ -360,45 +372,35 @@ int main()
 		cin >> s;
 		if (s == "break")
 			break;
-		if (s == "print")
-		{
+		else if (s == "print")
 			printit();
-			continue;
-		}
-		if (s == "save")
-		{
+		else if (s == "save")
 			saveit();
-			continue;
-		}
-		if (s == "add")
+		else if (s == "add")
 		{
 			addit();
-			continue;
+			if (atsv)
+				saveit();
 		}
-		if (s == "merge")
+		else if (s == "merge")
 		{
 			mergeit();
-			continue;
+			if (atsv)
+				saveit();
 		}
-		if (s == "sets")
+		else if (s == "sets")
 		{
 			sets();
-			continue;
+			if (atsv)
+				saveit();
 		}
-		if (s == "clear")
-		{
+		else if (s == "clear")
 			clearscr();
-			continue;
-		}
-		if (s == "help")
-		{
+		else if (s == "help")
 			help();
-			continue;
-		}
-		cout << "不明指令 '" << s << "'. 输入 'help' 以获取帮助.\n";
+		else
+			cout << "不明指令 '" << s << "'. 输入 'help' 以获取帮助.\n";
 	}
 	saveit();
 	return 0;
 }
-// get:ch
-// merge:can't merge - -(.)
